@@ -5,13 +5,20 @@ const App = () => {
   // write your code here
   const [time, setTime] = useState();
   function main(e) {
-    if (time > 0) {
-      setInterval(() => {
-        setTime(time - 1);
-      }, 1000);
-    }
+    let inter = setInterval(() => {
+      const mintime = time;
+      if (mintime === 0) {
+        clearInterval(inter);
+      }
+      setTime((prv) => prv - 1);
+    }, 1000);
   }
-
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     setTime(time - 1);
+  //   }),
+  //     1000;
+  // }, [time]);
   return (
     <div className="wrapper">
       <div id="whole-center">
@@ -20,16 +27,18 @@ const App = () => {
           <input
             id="timeCount"
             onKeyDown={(e) => {
-              setTime(e.target.value);
               if (e.keyCode === 13) {
-                main;
+                main(e);
               }
+            }}
+            onChange={(e) => {
+              setTime(e.target.value);
             }}
           />{" "}
           sec.
         </h1>
       </div>
-      <div id="current-time">{time}</div>
+      <div id="current-time">{time > 5 || time <= 0 ? null : time}</div>
     </div>
   );
 };
